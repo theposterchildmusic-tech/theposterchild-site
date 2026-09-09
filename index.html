@@ -59,7 +59,10 @@
   /* the sharp photo: bottom edge on the section's bottom edge, scaled so the hairline sits at the capture box */
   .hero .photo{position:absolute;z-index:1;left:50%;top:var(--top);transform:translateX(-50%);height:var(--H)}
   .hero .photo img{height:100%;width:auto;filter:grayscale(1) contrast(1.12) brightness(.9);
-    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(180deg,transparent 0,#000 12%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(180deg,transparent 0,#000 12%);
+    mask-composite:intersect}
   .title{font-family:var(--sans);font-weight:700;line-height:.92;margin:0 0 clamp(18px,3vh,28px);
     font-size:clamp(52px, 8.2vw, 128px);letter-spacing:-.035em;color:var(--bone);white-space:nowrap;text-shadow:0 2px 30px rgba(0,0,0,.6)}
 
