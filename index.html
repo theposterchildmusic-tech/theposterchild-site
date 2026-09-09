@@ -49,17 +49,17 @@
   .wrap{width:min(1100px, 92vw);margin:0 auto}
 
   /* ---------- hero ---------- */
-  .hero{position:relative;padding:clamp(28px,5vh,56px) 0 0}
-  .title{font-family:var(--sans);font-weight:700;line-height:.92;margin:0 0 clamp(18px,3vh,32px);
-    font-size:clamp(52px, 8.2vw, 128px);letter-spacing:-.035em;color:var(--bone);white-space:nowrap}
-  .photo{position:relative;margin:clamp(24px,4vh,48px) auto 0;width:fit-content;max-width:92vw}
-  .photo img{display:block;width:auto;height:auto;max-width:100%;max-height:88vh;filter:grayscale(1) contrast(1.12) brightness(.9);
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);
-    mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);
-    -webkit-mask-composite:source-in;mask-composite:intersect}
+  .hero{position:relative;min-height:100svh;overflow:hidden;padding:clamp(40px,7vh,80px) 0 0}
+  .hero .photo{position:absolute;inset:0;z-index:0}
+  .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 0%;filter:grayscale(1) contrast(1.12) brightness(.9)}
+  .hero .photo::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,10,10,.5) 0%, rgba(10,10,10,.15) 35%, rgba(10,10,10,0) 60%, rgba(10,10,10,.85) 92%, var(--ink) 100%)}
+  .hero .wrap{position:relative;z-index:1;text-align:center}
+  .title{font-family:var(--sans);font-weight:700;line-height:.92;margin:0 0 clamp(18px,3vh,28px);
+    font-size:clamp(52px, 8.2vw, 128px);letter-spacing:-.035em;color:var(--bone);white-space:nowrap;text-shadow:0 2px 30px rgba(0,0,0,.6)}
 
   /* ---------- signup ---------- */
-  form.list{position:relative;max-width:560px}
+  form.list{position:relative;max-width:560px;margin:0 auto;text-align:left}
   .field{display:flex;border:1px solid var(--bone);background:rgba(10,10,10,.55);backdrop-filter:blur(4px)}
   .field input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--bone);font-family:var(--mono);font-size:16px;padding:18px 16px}
   .field input::placeholder{color:var(--bone-dim)}
@@ -72,13 +72,14 @@
   .msg.ok{color:var(--bone)}
   .msg.err{color:var(--hot)}
   .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
-  .stamp{display:none;position:absolute;right:-8px;top:-64px;transform:rotate(-12deg);
-    font-family:var(--sans);font-weight:700;font-size:26px;letter-spacing:.08em;text-transform:uppercase;color:var(--hot);
-    border:4px double var(--hot);padding:4px 14px;opacity:.85;pointer-events:none;
-    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.6' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 -1.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.6' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 -1.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  form.list.done .stamp{display:block;animation:slam .35s cubic-bezier(.2,1.4,.4,1)}
-  @keyframes slam{from{transform:rotate(-12deg) scale(2.2);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:.85}}
+  .stamp{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;pointer-events:none;
+    background:rgba(10,10,10,.55);opacity:0;visibility:hidden}
+  .stamp span{transform:rotate(-12deg);font-family:var(--sans);font-weight:700;font-size:clamp(44px,11vw,180px);line-height:.9;
+    letter-spacing:.02em;text-transform:uppercase;color:var(--hot);border:clamp(4px,.7vw,10px) double var(--hot);padding:.1em .3em;text-align:center;text-shadow:0 0 30px rgba(255,59,59,.35);opacity:.92}
+  .stamp.show{visibility:visible;animation:stamp 2.6s ease-out forwards}
+  .stamp.show span{animation:slam .4s cubic-bezier(.2,1.4,.4,1) both}
+  @keyframes stamp{0%{opacity:0}8%{opacity:1}75%{opacity:1}100%{opacity:0;visibility:hidden}}
+  @keyframes slam{from{transform:rotate(-12deg) scale(2.4)}to{transform:rotate(-12deg) scale(1)}}
 
   /* ---------- sections ---------- */
   section{padding:clamp(40px,7vw,80px) 0}
@@ -110,6 +111,14 @@
     .br{display:inline}
     .platforms{grid-template-columns:repeat(2,1fr)}
     .title{white-space:normal;font-size:clamp(56px,15vw,96px)}
+    .hero{min-height:0;padding:28px 0 0}
+    .hero .wrap{text-align:left}
+    .hero{display:flex;flex-direction:column}
+    .hero .wrap{order:1}
+    .hero .photo{order:2;position:relative;inset:auto;height:62vh;margin-top:0}
+    .hero .photo img{object-position:50% 42%}
+    .hero .photo::after{background:linear-gradient(180deg, var(--ink) 0%, rgba(10,10,10,0) 14%, rgba(10,10,10,0) 80%, rgba(10,10,10,.7) 94%, var(--ink) 100%)}
+    section:first-of-type{padding-top:8px}
   }
   @media (max-width:480px){
     .platforms{grid-template-columns:1fr}
@@ -124,11 +133,18 @@
 
 <main>
 
+  <div class="stamp" id="stamp" aria-hidden="true"><span>on the list</span></div>
+
   <div class="hero">
+    <div class="photo">
+      <picture>
+        <source srcset="img/mic.webp" type="image/webp">
+        <img src="img/mic.jpg" alt="The Poster Child on the studio floor, gripping a microphone" fetchpriority="high">
+      </picture>
+    </div>
     <div class="wrap">
       <h1 class="title">The Poster<span class="br"><br></span> Child</h1>
       <form class="list" id="fanForm" novalidate>
-        <span class="stamp">on the list</span>
         <div class="field">
           <input type="text" name="contact" id="contact" placeholder="email or @instagram" autocomplete="email" required aria-label="Email or Instagram handle">
           <button type="submit" id="submitBtn">Get on the list</button>
@@ -137,12 +153,6 @@
         <p class="hint">new music, unreleased stuff, and show invites. no spam!</p>
         <p class="msg" id="msg" role="status" aria-live="polite"></p>
       </form>
-    </div>
-    <div class="photo">
-      <picture>
-        <source srcset="img/mic.webp" type="image/webp">
-        <img src="img/mic.jpg" alt="The Poster Child on the studio floor, gripping a microphone" fetchpriority="high">
-      </picture>
     </div>
   </div>
 
@@ -218,7 +228,7 @@
         headers:{'Content-Type':'text/plain;charset=utf-8'},
         body: JSON.stringify({ type:c.type, value:c.value, source:location.hostname, ua:navigator.userAgent, ref:document.referrer })
       });
-      form.classList.add('done');
+      const st=document.getElementById('stamp'); st.classList.remove('show'); void st.offsetWidth; st.classList.add('show');
       msg.textContent = c.type === 'email' ? 'you\'re in.' : 'you\'re in. watch your DMs.';
       msg.classList.add('ok');
       input.value = '';
