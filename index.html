@@ -124,8 +124,9 @@
     .hero .wrap{text-align:left;order:1}
     .hero .bg{display:none}
     .hero .photo{position:relative;order:2;left:auto;top:auto;transform:none;height:62vh;width:100%;margin:0}
-    .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 42%}
-    .hero .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, var(--ink) 0%, rgba(10,10,10,0) 14%, rgba(10,10,10,0) 80%, rgba(10,10,10,.7) 94%, var(--ink) 100%)}
+    .hero .photo{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%);mask-image:linear-gradient(180deg,transparent 0,#000 28%)}
+    .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 42%;-webkit-mask-image:none;mask-image:none}
+    .hero .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0) 80%, rgba(10,10,10,.7) 94%, var(--ink) 100%)}
     section:first-of-type{padding-top:8px}
   }
   @media (max-width:480px){
