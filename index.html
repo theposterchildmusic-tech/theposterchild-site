@@ -89,6 +89,28 @@
   @keyframes stamp{0%{opacity:0}8%{opacity:1}75%{opacity:1}100%{opacity:0;visibility:hidden}}
   @keyframes slam{from{transform:rotate(-12deg) scale(2.4)}to{transform:rotate(-12deg) scale(1)}}
 
+  /* ---------- modal ---------- */
+  .modal{position:fixed;inset:0;z-index:55;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(5,5,5,.78);backdrop-filter:blur(6px)}
+  .modal.open{display:flex}
+  .card{position:relative;width:min(520px,100%);background:var(--ink);border:1px solid var(--bone);padding:clamp(22px,4vw,36px);box-shadow:0 40px 80px -20px rgba(0,0,0,.9);animation:cardin .28s cubic-bezier(.2,1.2,.4,1)}
+  @keyframes cardin{from{transform:translateY(14px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+  .card h2{font-family:var(--sans);font-weight:700;font-size:clamp(26px,4vw,36px);letter-spacing:-.03em;line-height:1;margin:0 0 6px}
+  .card .sub{font-family:var(--type);font-size:13px;color:var(--bone-dim);margin:0 0 22px}
+  .card label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-dim);margin:0 0 6px}
+  .card .in{width:100%;background:transparent;border:1px solid var(--line);color:var(--bone);font-family:var(--mono);font-size:15px;padding:13px 14px;margin-bottom:16px;outline:0;transition:border-color .2s}
+  .card .in:focus{border-color:var(--bone)}
+  .card .in::placeholder{color:var(--grey)}
+  .card label.consent{display:flex;gap:12px;align-items:flex-start;font-size:12px;line-height:1.5;color:var(--bone-dim);margin:4px 0 20px;text-transform:none;letter-spacing:0}
+  .consent input{appearance:none;flex:none;width:18px;height:18px;margin-top:2px;border:1px solid var(--bone);background:transparent;display:grid;place-items:center}
+  .consent input:checked{background:var(--bone)}
+  .consent input:checked::after{content:"";width:5px;height:9px;border:solid var(--ink);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+  .card .go{width:100%;border:0;background:var(--bone);color:var(--ink);font-family:var(--sans);font-weight:700;font-size:16px;padding:16px;transition:background .2s,color .2s}
+  .card .go:hover{background:var(--hot);color:var(--bone)}
+  .card .go:disabled{opacity:.5}
+  .close{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--bone-dim);font-family:var(--mono);font-size:22px;line-height:1;padding:6px}
+  .close:hover{color:var(--bone)}
+  .card .msg{margin-top:12px}
+
   /* ---------- sections ---------- */
   section{padding:clamp(20px,3.5vw,44px) 0}
   #listen{padding-top:0;padding-bottom:0}
@@ -142,6 +164,23 @@
 
 <main>
 
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mtitle">
+    <form class="card" id="listForm" novalidate>
+      <button type="button" class="close" id="closeModal" aria-label="Close">&times;</button>
+      <h2 id="mtitle">Almost in.</h2>
+      <p class="sub" id="msub">just a couple more things.</p>
+      <label for="fname">Name</label>
+      <input class="in" type="text" id="fname" name="name" placeholder="what should I call you?" autocomplete="name" required>
+      <label for="fphone">Phone</label>
+      <input class="in" type="tel" id="fphone" name="phone" placeholder="(optional) for show invites" autocomplete="tel">
+      <label for="fig">Instagram</label>
+      <input class="in" type="text" id="fig" name="instagram" placeholder="@yourhandle (optional)" autocomplete="off">
+      <label class="consent"><input type="checkbox" id="consent" required><span>I agree to receive emails and text messages from The Poster Child about new music, unreleased material, and shows. Message and data rates may apply. You can unsubscribe at any time.</span></label>
+      <button type="submit" class="go" id="goBtn">Get on the list</button>
+      <p class="msg" id="mmsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+
   <div class="stamp" id="stamp" aria-hidden="true"><span>on the list</span></div>
 
   <div class="hero" id="hero">
@@ -158,7 +197,7 @@
       <h1 class="title">The Poster<span class="br"><br></span> Child</h1>
       <form class="list" id="fanForm" novalidate>
         <div class="field">
-          <input type="text" name="contact" id="contact" placeholder="email or @instagram" autocomplete="email" required aria-label="Email or Instagram handle">
+          <input type="email" name="email" id="email" placeholder="your email" autocomplete="email" required aria-label="Email">
           <button type="submit" id="submitBtn">Get on the list</button>
         </div>
         <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -224,40 +263,59 @@
   fitHero(); window.addEventListener('resize', fitHero); window.addEventListener('load', fitHero);
 
   const form = document.getElementById('fanForm');
-  const input = document.getElementById('contact');
-  const btn = document.getElementById('submitBtn');
+  const emailIn = document.getElementById('email');
   const msg = document.getElementById('msg');
+  const modal = document.getElementById('modal');
+  const listForm = document.getElementById('listForm');
+  const goBtn = document.getElementById('goBtn');
+  const mmsg = document.getElementById('mmsg');
+  let pendingEmail = '';
 
-  function classify(v){
-    v = v.trim();
-    if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return {type:'email', value:v.toLowerCase()};
-    const h = v.replace(/^@/,'').replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i,'').replace(/[\/?].*$/,'');
-    if (/^[A-Za-z0-9._]{1,30}$/.test(h)) return {type:'instagram', value:'@'+h.toLowerCase()};
-    return null;
-  }
+  const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  const cleanIg = v => { const h=v.trim().replace(/^@/,'').replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i,'').replace(/[\/?].*$/,''); return h ? '@'+h.toLowerCase() : ''; };
 
-  form.addEventListener('submit', async (e) => {
+  function openModal(){ modal.classList.add('open'); document.body.style.overflow='hidden'; setTimeout(()=>document.getElementById('fname').focus(),50); }
+  function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
     msg.className = 'msg';
     if (form.website.value) return;
-    const c = classify(input.value);
-    if (!c){ msg.textContent = 'that doesn\'t look like an email or a handle.'; msg.classList.add('err'); input.focus(); return; }
-    btn.disabled = true; btn.textContent = 'Sending';
+    if (!isEmail(emailIn.value)){ msg.textContent = 'that doesn\'t look like an email.'; msg.classList.add('err'); emailIn.focus(); return; }
+    pendingEmail = emailIn.value.trim().toLowerCase();
+    document.getElementById('msub').textContent = pendingEmail;
+    openModal();
+  });
+
+  document.getElementById('closeModal').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+  listForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    mmsg.className = 'msg';
+    const name = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('fphone').value.trim();
+    const ig = cleanIg(document.getElementById('fig').value);
+    const consent = document.getElementById('consent').checked;
+    if (!name){ mmsg.textContent = 'need a name.'; mmsg.classList.add('err'); return; }
+    if (!consent){ mmsg.textContent = 'you have to check the box.'; mmsg.classList.add('err'); return; }
+    goBtn.disabled = true; goBtn.textContent = 'Sending';
     try{
       await fetch(SHEET_ENDPOINT, {
         method:'POST', mode:'no-cors',
         headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify({ type:c.type, value:c.value, source:location.hostname, ua:navigator.userAgent, ref:document.referrer })
+        body: JSON.stringify({ email:pendingEmail, name, phone, instagram:ig, consent:true, source:location.hostname, ua:navigator.userAgent, ref:document.referrer })
       });
+      closeModal();
+      listForm.reset();
       const st=document.getElementById('stamp'); st.classList.remove('show'); void st.offsetWidth; st.classList.add('show');
-      msg.textContent = c.type === 'email' ? 'you\'re in.' : 'you\'re in. watch your DMs.';
-      msg.classList.add('ok');
-      input.value = '';
-      btn.textContent = 'Done';
+      msg.textContent = 'you\'re in.'; msg.classList.add('ok');
+      emailIn.value = '';
     }catch(err){
-      msg.textContent = 'something broke. try again in a sec.'; msg.classList.add('err');
-      btn.disabled = false; btn.textContent = 'Get on the list';
+      mmsg.textContent = 'something broke. try again in a sec.'; mmsg.classList.add('err');
     }
+    goBtn.disabled = false; goBtn.textContent = 'Get on the list';
   });
 </script>
 </body>
