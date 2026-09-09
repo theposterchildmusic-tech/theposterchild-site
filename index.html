@@ -47,11 +47,12 @@
   .wrap{width:min(1100px, 92vw);margin:0 auto}
 
   /* ---------- hero ---------- */
-  .hero{position:relative;min-height:100svh;display:grid;align-items:end;overflow:hidden;padding-bottom:clamp(28px,7vh,72px)}
+  .hero{position:relative;min-height:100svh;display:grid;align-items:start;overflow:hidden;padding:clamp(48px,9vh,96px) 0 clamp(28px,7vh,72px)}
   .hero .photo{position:absolute;inset:0;z-index:0}
-  .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:62% 30%;filter:grayscale(1) contrast(1.15) brightness(.85)}
+  .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:92% 0%;filter:grayscale(1) contrast(1.15) brightness(.85)}
   .hero .photo::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(10,10,10,.2) 0%, rgba(10,10,10,.05) 35%, rgba(10,10,10,.8) 75%, var(--ink) 100%)}
+    background:linear-gradient(180deg, rgba(10,10,10,.15) 0%, rgba(10,10,10,.05) 40%, rgba(10,10,10,.35) 85%, rgba(10,10,10,.9) 100%),
+      linear-gradient(90deg, rgba(10,10,10,.55) 0%, rgba(10,10,10,.15) 45%, transparent 65%)}
   .hero .wrap{position:relative;z-index:1}
   .title{font-family:var(--sans);font-weight:700;line-height:.9;margin:0 0 clamp(22px,4vh,40px);
     font-size:clamp(56px, 11vw, 150px);letter-spacing:-.03em;color:var(--bone);text-shadow:0 0 40px rgba(0,0,0,.6)}
@@ -103,7 +104,13 @@
   footer a:hover{color:var(--bone)}
   footer .sig{font-family:var(--type);color:var(--grey)}
 
-  @media (max-width:720px){.platforms{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:720px){
+    .platforms{grid-template-columns:repeat(2,1fr)}
+    .hero{align-items:stretch}
+    .hero .wrap{display:flex;flex-direction:column;justify-content:space-between}
+    .hero .photo img{object-position:50% 15%}
+    .hero .photo::after{background:linear-gradient(180deg, rgba(10,10,10,.55) 0%, rgba(10,10,10,.05) 30%, rgba(10,10,10,.1) 60%, rgba(10,10,10,.85) 85%, var(--ink) 100%)}
+  }
   @media (max-width:480px){
     .platforms{grid-template-columns:1fr}
     .field button{padding:0 16px;font-size:14px}
