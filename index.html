@@ -30,6 +30,8 @@
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--mono);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   ::selection{background:var(--bone);color:var(--ink)}
+  html,body{cursor:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23f4f4f4%22/%3E%3Cstop%20offset%3D%22.5%22%20stop-color%3D%22%23a9a9ad%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%235a5a60%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20stroke%3D%22%231a1a1a%22%20stroke-width%3D%221%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%202%20L3%2024%20L8.5%2019%20L12.5%2028%20L16.5%2026%20L12.5%2017.5%20L19.5%2017.5%20Z%22%20fill%3D%22url%28%23g%29%22/%3E%3Cpath%20d%3D%22M5.5%206%20C7%204.5%208%207%206.5%208.5%22%20fill%3D%22none%22%20stroke%3D%22%23e8e8ea%22%20stroke-width%3D%22.8%22/%3E%3Cpath%20d%3D%22M5.5%2011.5%20C8.5%209.5%2010%2013%207%2014.5%22%20fill%3D%22none%22%20stroke%3D%22%23e8e8ea%22%20stroke-width%3D%22.8%22/%3E%3Cpath%20d%3D%22M19.5%2017.5%20C22%2015.5%2024.5%2017%2023%2019.5%20C22%2021%2020%2020%2020.5%2018.5%22%20fill%3D%22none%22%20stroke%3D%22%23c9c9cd%22%20stroke-width%3D%22.9%22/%3E%3Cpath%20d%3D%22M16.5%2026%20C18.5%2028%2017%2030.5%2015%2029.5%22%20fill%3D%22none%22%20stroke%3D%22%23c9c9cd%22%20stroke-width%3D%22.9%22/%3E%3Ccircle%20cx%3D%224.5%22%20cy%3D%223.5%22%20r%3D%22.9%22%20fill%3D%22%23fff%22%20stroke%3D%22none%22/%3E%3C/g%3E%3C/svg%3E") 3 2, auto}
+  a,button,input,label{cursor:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23ffffff%22/%3E%3Cstop%20offset%3D%22.5%22%20stop-color%3D%22%23b8b8bc%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2366666c%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20stroke%3D%22%231a1a1a%22%20stroke-width%3D%221%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M16%202%20L6%2014%20L12.5%2014%20L12.5%2021%20L19.5%2021%20L19.5%2014%20L26%2014%20Z%22%20fill%3D%22url%28%23g%29%22/%3E%3Cpath%20d%3D%22M12.5%2021%20C10%2023%209%2027%2012%2029%20L20%2029%20C23%2027%2022%2023%2019.5%2021%22%20fill%3D%22url%28%23g%29%22/%3E%3Cpath%20d%3D%22M9%2026%20C7%2024.5%207.5%2022%209.5%2022%22%20fill%3D%22none%22%20stroke%3D%22%23e8e8ea%22%20stroke-width%3D%22.9%22/%3E%3Cpath%20d%3D%22M23%2026%20C25%2024.5%2024.5%2022%2022.5%2022%22%20fill%3D%22none%22%20stroke%3D%22%23e8e8ea%22%20stroke-width%3D%22.9%22/%3E%3Cpath%20d%3D%22M14%208%20C15.5%206.5%2016.5%206.5%2018%208%22%20fill%3D%22none%22%20stroke%3D%22%23e8e8ea%22%20stroke-width%3D%22.8%22/%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2212%22%20r%3D%221.1%22%20fill%3D%22%23fff%22%20stroke%3D%22none%22/%3E%3C/g%3E%3C/svg%3E") 16 2, pointer}
   a{color:inherit}
   img{max-width:100%;display:block}
 
@@ -47,22 +49,21 @@
   .wrap{width:min(1100px, 92vw);margin:0 auto}
 
   /* ---------- hero ---------- */
-  .hero{position:relative;min-height:100svh;display:grid;align-items:start;overflow:hidden;padding:clamp(48px,9vh,96px) 0 clamp(28px,7vh,72px)}
-  .hero .photo{position:absolute;inset:0;z-index:0}
-  .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:92% 0%;filter:grayscale(1) contrast(1.15) brightness(.85)}
-  .hero .photo::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(10,10,10,.15) 0%, rgba(10,10,10,.05) 40%, rgba(10,10,10,.35) 85%, rgba(10,10,10,.9) 100%),
-      linear-gradient(90deg, rgba(10,10,10,.55) 0%, rgba(10,10,10,.15) 45%, transparent 65%)}
-  .hero .wrap{position:relative;z-index:1}
-  .title{font-family:var(--sans);font-weight:700;line-height:.9;margin:0 0 clamp(22px,4vh,40px);
-    font-size:clamp(56px, 11vw, 150px);letter-spacing:-.03em;color:var(--bone);text-shadow:0 0 40px rgba(0,0,0,.6)}
+  .hero{position:relative;padding:clamp(28px,5vh,56px) 0 0}
+  .title{font-family:var(--sans);font-weight:700;line-height:.92;margin:0 0 clamp(18px,3vh,32px);
+    font-size:clamp(52px, 8.2vw, 128px);letter-spacing:-.035em;color:var(--bone);white-space:nowrap}
+  .photo{position:relative;margin:clamp(24px,4vh,48px) auto 0;width:fit-content;max-width:92vw}
+  .photo img{display:block;width:auto;height:auto;max-width:100%;max-height:88vh;filter:grayscale(1) contrast(1.12) brightness(.9);
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);
+    -webkit-mask-composite:source-in;mask-composite:intersect}
 
   /* ---------- signup ---------- */
   form.list{position:relative;max-width:560px}
   .field{display:flex;border:1px solid var(--bone);background:rgba(10,10,10,.55);backdrop-filter:blur(4px)}
   .field input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--bone);font-family:var(--mono);font-size:16px;padding:18px 16px}
   .field input::placeholder{color:var(--bone-dim)}
-  .field button{border:0;border-left:1px solid var(--bone);background:var(--bone);color:var(--ink);cursor:pointer;
+  .field button{border:0;border-left:1px solid var(--bone);background:var(--bone);color:var(--ink);
     font-family:var(--sans);font-weight:700;font-size:15px;letter-spacing:.02em;padding:0 26px;transition:background .2s,color .2s}
   .field button:hover{background:var(--hot);color:var(--bone)}
   .field button:disabled{opacity:.5;cursor:wait}
@@ -100,16 +101,15 @@
 
   footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--bone-dim);font-size:12px}
   footer .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 30px;align-items:center}
-  footer a{text-decoration:none;letter-spacing:.14em;text-transform:uppercase;margin-right:22px}
+  footer a{text-decoration:none;letter-spacing:.14em;text-transform:uppercase}
   footer a:hover{color:var(--bone)}
   footer .sig{font-family:var(--type);color:var(--grey)}
 
+  .br{display:none}
   @media (max-width:720px){
+    .br{display:inline}
     .platforms{grid-template-columns:repeat(2,1fr)}
-    .hero{align-items:stretch}
-    .hero .wrap{display:flex;flex-direction:column;justify-content:space-between}
-    .hero .photo img{object-position:50% 15%}
-    .hero .photo::after{background:linear-gradient(180deg, rgba(10,10,10,.55) 0%, rgba(10,10,10,.05) 30%, rgba(10,10,10,.1) 60%, rgba(10,10,10,.85) 85%, var(--ink) 100%)}
+    .title{white-space:normal;font-size:clamp(56px,15vw,96px)}
   }
   @media (max-width:480px){
     .platforms{grid-template-columns:1fr}
@@ -125,14 +125,8 @@
 <main>
 
   <div class="hero">
-    <div class="photo">
-      <picture>
-        <source srcset="img/mic.webp" type="image/webp">
-        <img src="img/mic.jpg" alt="The Poster Child on the studio floor, gripping a microphone" fetchpriority="high">
-      </picture>
-    </div>
     <div class="wrap">
-      <h1 class="title">The Poster<br>Child</h1>
+      <h1 class="title">The Poster<span class="br"><br></span> Child</h1>
       <form class="list" id="fanForm" novalidate>
         <span class="stamp">on the list</span>
         <div class="field">
@@ -140,22 +134,17 @@
           <button type="submit" id="submitBtn">Get on the list</button>
         </div>
         <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <p class="hint">unreleased stuff, show invites, no spam.</p>
+        <p class="hint">new music, unreleased stuff, and show invites. no spam!</p>
         <p class="msg" id="msg" role="status" aria-live="polite"></p>
       </form>
     </div>
-  </div>
-
-  <section id="watch">
-    <div class="wrap">
-      <p class="label">watch · guilty pleasure</p>
-      <div class="lightbox">
-        <div class="frame">
-          <iframe src="https://www.youtube.com/embed/rZ-d29WgKCc?si=_cmnaZq32baLMpOj" title="The Poster Child — Guilty Pleasure (Official Video)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-        </div>
-      </div>
+    <div class="photo">
+      <picture>
+        <source srcset="img/mic.webp" type="image/webp">
+        <img src="img/mic.jpg" alt="The Poster Child on the studio floor, gripping a microphone" fetchpriority="high">
+      </picture>
     </div>
-  </section>
+  </div>
 
   <section id="listen">
     <div class="wrap">
@@ -177,10 +166,20 @@
     </div>
   </section>
 
+  <section id="watch">
+    <div class="wrap">
+      <p class="label">watch · guilty pleasure</p>
+      <div class="lightbox">
+        <div class="frame">
+          <iframe src="https://www.youtube.com/embed/rZ-d29WgKCc?si=_cmnaZq32baLMpOj" title="The Poster Child — Guilty Pleasure (Official Video)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="wrap row">
       <div>
-        <a href="https://www.instagram.com/iamtheposterchild" target="_blank" rel="noopener">Instagram</a>
         <a href="mailto:theposterchildmusic@gmail.com">Contact</a>
       </div>
       <div class="sig">© <span id="yr"></span> the poster child</div>
