@@ -49,13 +49,15 @@
   .wrap{width:min(1100px, 92vw);margin:0 auto}
 
   /* ---------- hero ---------- */
-  .hero{position:relative;overflow:hidden;height:100svh;min-height:640px;padding:clamp(40px,7vh,80px) 0 0;--b:260px}
+  .hero{position:relative;overflow:hidden;height:100svh;min-height:640px;padding:clamp(40px,7vh,80px) 0 0;--b:260px;
+    /* photo scale: hairline (19% down the photo) sits 18px under the capture box, flat hand (73%) sits at 97% of the section */
+    --H:calc((97svh - var(--b) - 18px) / .54);--top:calc(var(--b) + 18px - .19 * var(--H))}
   .hero .wrap{position:relative;z-index:2;text-align:center}
   /* blurred, full-bleed copy of the photo extends its backdrop across the whole section */
-  .hero .bg{position:absolute;z-index:0;left:0;right:0;bottom:0;height:calc((100svh - var(--b)) / .81 * 1.45)}
+  .hero .bg{position:absolute;z-index:0;left:0;right:0;top:calc(var(--top) - .45 * var(--H));height:calc(1.45 * var(--H))}
   .hero .bg img{width:100%;height:100%;object-fit:cover;object-position:50% 100%;filter:contrast(1.12) brightness(.9)}
   /* the sharp photo: bottom edge on the section's bottom edge, scaled so the hairline sits at the capture box */
-  .hero .photo{position:absolute;z-index:1;left:50%;bottom:0;transform:translateX(-50%);height:calc((100svh - var(--b)) / .81)}
+  .hero .photo{position:absolute;z-index:1;left:50%;top:var(--top);transform:translateX(-50%);height:var(--H)}
   .hero .photo img{height:100%;width:auto;filter:grayscale(1) contrast(1.12) brightness(.9);
     -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
   .title{font-family:var(--sans);font-weight:700;line-height:.92;margin:0 0 clamp(18px,3vh,28px);
@@ -118,7 +120,7 @@
     .hero{height:auto;min-height:0;padding:28px 0 0;display:flex;flex-direction:column}
     .hero .wrap{text-align:left;order:1}
     .hero .bg{display:none}
-    .hero .photo{position:relative;order:2;left:auto;bottom:auto;transform:none;height:62vh;width:100%;margin:0}
+    .hero .photo{position:relative;order:2;left:auto;top:auto;transform:none;height:62vh;width:100%;margin:0}
     .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 42%}
     .hero .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, var(--ink) 0%, rgba(10,10,10,0) 14%, rgba(10,10,10,0) 80%, rgba(10,10,10,.7) 94%, var(--ink) 100%)}
     section:first-of-type{padding-top:8px}
