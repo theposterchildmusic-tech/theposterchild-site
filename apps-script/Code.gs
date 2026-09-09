@@ -1,74 +1,67 @@
 /**
- * The Poster Child — fan capture endpoint
- * Receives POSTs from the website and appends a row to the Google Sheet.
+ * The Poster Child — fan capture endpoint (v2: email + name + phone + IG + consent)
  *
- * SETUP
- * 1. Create a new Google Sheet. Rename the first tab to "Fans" (or change SHEET_NAME below).
- * 2. Extensions → Apps Script. Delete the default code, paste this whole file, save.
- * 3. Run the `setup` function once (select it in the toolbar, press ▶). Approve the permissions.
- *    This writes the header row.
- * 4. Deploy → New deployment → type "Web app".
- *      Execute as: Me
- *      Who has access: Anyone
- *    Click Deploy, copy the Web app URL.
- * 5. Paste that URL into index.html where it says PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE.
+ * SETUP (first time)
+ * 1. Google Sheet → Extensions → Apps Script → replace everything with this file → save.
+ * 2. Run `setup` once (approve permissions). It writes the header row.
+ * 3. Deploy → New deployment → Web app → Execute as: Me, Who has access: Anyone → copy the URL.
  *
- * Any time you edit this script you must Deploy → Manage deployments → Edit → "New version"
- * for the live URL to pick up the change.
+ * UPDATING (you already have a deployment)
+ * Paste this file over the old code, save, then Deploy → Manage deployments → pencil icon →
+ * Version: "New version" → Deploy. The URL stays the same, so the site needs no change.
  */
 
 const SHEET_NAME = 'Fans';
-const NOTIFY_EMAIL = ''; // optional: put your email here to get a ping on every new signup
+const NOTIFY_EMAIL = ''; // optional: your email to get a ping on every signup
+
+const HEADERS = ['Timestamp', 'Email', 'Name', 'Phone', 'Instagram', 'Consent', 'Source', 'Referrer', 'User agent'];
 
 function setup() {
   const sh = getSheet_();
   if (sh.getLastRow() === 0) {
-    sh.appendRow(['Timestamp', 'Type', 'Contact', 'Source', 'Referrer', 'User agent']);
-    sh.getRange(1, 1, 1, 6).setFontWeight('bold');
+    sh.appendRow(HEADERS);
+    sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
     sh.setFrozenRows(1);
   }
 }
 
 function doPost(e) {
   try {
-    const data = JSON.parse(e.postData.contents || '{}');
-    const type = String(data.type || '').slice(0, 20);
-    const value = String(data.value || '').trim().slice(0, 120);
-
-    if (!value || (type !== 'email' && type !== 'instagram')) {
-      return json_({ ok: false, error: 'bad input' });
-    }
+    const d = JSON.parse(e.postData.contents || '{}');
+    const email = String(d.email || d.value || '').trim().toLowerCase().slice(0, 120);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return json_({ ok: false, error: 'bad email' });
 
     const sh = getSheet_();
+    if (sh.getLastRow() === 0) setup();
 
-    // skip exact duplicates
+    // skip exact duplicate emails
     const existing = sh.getLastRow() > 1
-      ? sh.getRange(2, 3, sh.getLastRow() - 1, 1).getValues().flat().map(v => String(v).toLowerCase())
+      ? sh.getRange(2, 2, sh.getLastRow() - 1, 1).getValues().flat().map(v => String(v).toLowerCase())
       : [];
-    if (existing.includes(value.toLowerCase())) {
-      return json_({ ok: true, duplicate: true });
-    }
+    if (existing.includes(email)) return json_({ ok: true, duplicate: true });
 
     sh.appendRow([
       new Date(),
-      type,
-      value,
-      String(data.source || '').slice(0, 100),
-      String(data.ref || '').slice(0, 200),
-      String(data.ua || '').slice(0, 200)
+      email,
+      String(d.name || '').slice(0, 80),
+      String(d.phone || '').slice(0, 40),
+      String(d.instagram || '').slice(0, 40),
+      d.consent ? 'yes' : 'no',
+      String(d.source || '').slice(0, 100),
+      String(d.ref || '').slice(0, 200),
+      String(d.ua || '').slice(0, 200)
     ]);
 
     if (NOTIFY_EMAIL) {
-      MailApp.sendEmail(NOTIFY_EMAIL, 'New fan on the list: ' + value, type + ': ' + value);
+      MailApp.sendEmail(NOTIFY_EMAIL, 'New fan on the list: ' + email,
+        [d.name, email, d.phone, d.instagram].filter(Boolean).join('\n'));
     }
-
     return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }
 }
 
-// lets you open the web app URL in a browser to confirm it's alive
 function doGet() {
   return json_({ ok: true, msg: 'the poster child fan capture is live' });
 }
