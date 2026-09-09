@@ -66,6 +66,15 @@
   .title{font-family:var(--sans);font-weight:700;line-height:.92;margin:0 0 clamp(18px,3vh,28px);
     font-size:clamp(52px, 8.2vw, 128px);letter-spacing:-.035em;color:var(--bone);white-space:nowrap;text-shadow:0 2px 30px rgba(0,0,0,.6)}
 
+  .scrollcue{display:none}
+  @media (max-width:720px){
+    .scrollcue{display:flex;flex-direction:column;align-items:center;gap:2px;position:absolute;left:0;right:0;bottom:14px;z-index:3;pointer-events:none;
+      font-family:var(--type);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--bone);text-shadow:0 1px 8px rgba(0,0,0,.8)}
+    .scrollcue svg{width:22px;height:22px;fill:none;stroke:var(--bone);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;animation:cue 1.6s ease-in-out infinite}
+    .scrollcue svg+svg{margin-top:-12px;animation-delay:.2s}
+    @keyframes cue{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(5px);opacity:1}}
+  }
+
   /* ---------- signup ---------- */
   form.list{position:relative;max-width:560px;margin:0 auto;text-align:left}
   .field{display:flex;border:1px solid var(--bone);background:rgba(10,10,10,.55);backdrop-filter:blur(4px)}
@@ -192,6 +201,11 @@
         <source srcset="img/mic.webp" type="image/webp">
         <img src="img/mic.jpg" alt="The Poster Child on the studio floor, gripping a microphone" fetchpriority="high">
       </picture>
+      <div class="scrollcue" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></svg>
+        <span>scroll</span>
+      </div>
     </div>
     <div class="wrap">
       <h1 class="title">The Poster<span class="br"><br></span> Child</h1>
