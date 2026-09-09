@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Poster Child</title>
+<meta name="description" content="The Poster Child — alt-pop from Brooklyn. Watch Guilty Pleasure, listen everywhere, and get on the list.">
+<meta property="og:title" content="The Poster Child">
+<meta property="og:description" content="You found it. Alt-pop from Brooklyn. Watch Guilty Pleasure, listen everywhere, get on the list.">
+<meta property="og:image" content="/img/cover.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='16' y='23' font-family='Impact,sans-serif' font-size='22' fill='%23f2ede4' text-anchor='middle'%3EPC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a;
+    --ink-2:#161616;
+    --bone:#f2ede4;
+    --bone-dim:#b9b3a8;
+    --grey:#6f6a62;
+    --line:rgba(242,237,228,.18);
+    --tape:#d9c9a3;
+    --cold:#8f9bd6;
+    --hot:#ff3b3b;
+    --display:'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+    --mono:'IBM Plex Mono', 'Courier New', monospace;
+    --type:'Special Elite', 'Courier New', monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ink);color:var(--bone);
+    font-family:var(--mono);font-size:15px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  ::selection{background:var(--bone);color:var(--ink)}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+
+  /* studio sweep: key light from top, falloff into black */
+  .sweep{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% -10%, rgba(242,237,228,.16), transparent 60%),
+      radial-gradient(ellipse 40% 30% at 85% 110%, rgba(143,155,214,.10), transparent 60%),
+      linear-gradient(180deg,#141414 0%, #0a0a0a 45%, #050505 100%);
+  }
+  /* grain + vignette overlays */
+  .grain{
+    position:fixed;inset:-50%;z-index:50;pointer-events:none;opacity:.14;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1.2s steps(6) infinite;
+    mix-blend-mode:screen;
+  }
+  @keyframes grain{
+    0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}
+    60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}
+  }
+  .vignette{position:fixed;inset:0;z-index:49;pointer-events:none;
+    background:radial-gradient(ellipse 90% 80% at 50% 50%, transparent 55%, rgba(0,0,0,.65) 100%)}
+  @media (prefers-reduced-motion:reduce){.grain{animation:none}}
+
+  main{position:relative;z-index:1}
+  .wrap{width:min(1180px, 92vw);margin:0 auto}
+
+  /* ---------- top bar ---------- */
+  header.bar{
+    position:fixed;top:0;left:0;right:0;z-index:40;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px clamp(16px,4vw,40px);
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-dim);
+    mix-blend-mode:difference;
+  }
+  header.bar a{text-decoration:none}
+  header.bar nav a{margin-left:22px;position:relative}
+  header.bar nav a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .25s}
+  header.bar nav a:hover::after{transform:scaleX(1)}
+  .rec{display:inline-flex;align-items:center;gap:8px}
+  .rec i{width:8px;height:8px;border-radius:50%;background:var(--hot);box-shadow:0 0 10px var(--hot);animation:blink 1.6s infinite}
+  @keyframes blink{50%{opacity:.25}}
+  @media (max-width:640px){header.bar nav a:not(:last-child){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:100svh;display:grid;align-items:end;overflow:hidden;padding-bottom:clamp(28px,6vh,64px)}
+  .hero .photo{
+    position:absolute;inset:0;z-index:0;
+  }
+  .hero .photo img{width:100%;height:100%;object-fit:cover;object-position:62% 30%;filter:grayscale(1) contrast(1.15) brightness(.85)}
+  .hero .photo::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,10,10,.25) 0%, rgba(10,10,10,.05) 35%, rgba(10,10,10,.75) 75%, var(--ink) 100%)}
+  .hero .wrap{position:relative;z-index:1}
+  .kicker{font-family:var(--type);font-size:13px;color:var(--bone-dim);letter-spacing:.04em;margin:0 0 10px}
+  .title{
+    font-family:var(--display);font-weight:400;line-height:.86;margin:0;
+    font-size:clamp(78px, 17vw, 240px);letter-spacing:.01em;
+    color:var(--bone);text-shadow:0 0 40px rgba(0,0,0,.6);
+  }
+  .title .distress{
+    background:linear-gradient(180deg,var(--bone) 0%, var(--bone) 60%, #cfc8ba 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-foot{display:flex;flex-wrap:wrap;gap:18px 34px;align-items:flex-end;justify-content:space-between;margin-top:22px}
+  .hero-foot p{margin:0;max-width:44ch;color:var(--bone-dim);font-size:14px}
+  .hero-foot p b{color:var(--bone);font-weight:500}
+  .scroll{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-dim);display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+  .scroll span{display:inline-block;width:1px;height:38px;background:var(--bone-dim);animation:drop 1.8s ease-in-out infinite}
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* taped labels */
+  .tag{
+    display:inline-block;font-family:var(--type);font-size:12px;color:#2b2618;
+    background:var(--tape);padding:5px 12px;transform:rotate(-1.5deg);
+    box-shadow:0 2px 6px rgba(0,0,0,.5);position:relative;letter-spacing:.02em;
+  }
+  .tag::before,.tag::after{content:"";position:absolute;top:-6px;width:36px;height:14px;background:rgba(242,237,228,.35);transform:rotate(-8deg)}
+  .tag::before{left:-12px}.tag::after{right:-12px;transform:rotate(9deg)}
+  .tag.alt{transform:rotate(1.2deg)}
+
+  /* ---------- section chrome ---------- */
+  section{padding:clamp(64px,10vw,130px) 0;position:relative}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:18px;margin-bottom:clamp(28px,5vw,56px)}
+  .sec-head h2{font-family:var(--display);font-weight:400;font-size:clamp(44px,8vw,110px);line-height:.9;margin:0}
+  .sec-head .num{font-family:var(--type);color:var(--bone-dim);font-size:13px;white-space:nowrap}
+  .marks{position:absolute;left:0;right:0;top:0;height:0;pointer-events:none}
+  .marks::before,.marks::after{content:"+";position:absolute;top:-10px;color:var(--grey);font-family:var(--mono);font-size:16px}
+  .marks::before{left:4vw}.marks::after{right:4vw}
+
+  /* ---------- video ---------- */
+  .lightbox{
+    position:relative;background:#000;padding:clamp(10px,2vw,22px);
+    border:1px solid var(--line);
+    box-shadow:0 0 0 1px rgba(0,0,0,.8), 0 40px 80px -20px rgba(0,0,0,.9), inset 0 0 60px rgba(255,255,255,.03);
+  }
+  .lightbox::before{content:"";position:absolute;inset:-1px;pointer-events:none;
+    background:radial-gradient(ellipse 60% 40% at 50% 0%, rgba(242,237,228,.12), transparent 70%)}
+  .frame{position:relative;aspect-ratio:16/9;background:#050505;overflow:hidden}
+  .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .slate{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-dim)}
+  .slate b{color:var(--bone);font-weight:500}
+  .video-grid{display:grid;grid-template-columns:1fr;gap:28px}
+  .video-note{font-family:var(--type);color:var(--bone-dim);font-size:14px;max-width:52ch;margin:0}
+  .video-note em{color:var(--bone);font-style:normal}
+
+  /* ---------- listen ---------- */
+  .listen{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,72px);align-items:center}
+  .platforms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .plat{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:18px 18px;border:1px solid var(--line);text-decoration:none;
+    font-family:var(--display);font-size:clamp(24px,3vw,34px);letter-spacing:.03em;line-height:1;
+    position:relative;overflow:hidden;transition:color .2s,border-color .2s;
+    background:rgba(255,255,255,.015);
+  }
+  .plat::before{content:"";position:absolute;inset:0;background:var(--bone);transform:translateY(101%);transition:transform .28s cubic-bezier(.7,0,.2,1)}
+  .plat:hover{color:var(--ink);border-color:var(--bone)}
+  .plat:hover::before{transform:translateY(0)}
+  .plat span,.plat svg{position:relative;z-index:1}
+  .plat svg{width:22px;height:22px;flex:none;fill:currentColor}
+  .plat small{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--bone-dim);display:block;margin-top:5px;position:relative;z-index:1}
+  .plat:hover small{color:#3a3a3a}
+  .polaroid{
+    position:relative;background:var(--bone);padding:12px 12px 56px;transform:rotate(2deg);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.9);max-width:420px;margin:0 auto;
+  }
+  .polaroid img{aspect-ratio:3/4;object-fit:cover;object-position:50% 20%;filter:contrast(1.1) saturate(.85)}
+  .polaroid figcaption{position:absolute;left:16px;right:16px;bottom:16px;font-family:var(--type);color:#2b2618;font-size:13px;display:flex;justify-content:space-between}
+  .polaroid .tag{position:absolute;top:-14px;right:20px}
+  .listen-copy{margin:0 0 26px;color:var(--bone-dim);max-width:46ch}
+  .listen-copy b{color:var(--bone);font-weight:500}
+
+  /* ---------- contact sheet ---------- */
+  .sheet{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+  .sheet figure{margin:0;position:relative;border:6px solid #050505;outline:1px solid var(--line)}
+  .sheet img{aspect-ratio:1/1;object-fit:cover;filter:grayscale(1) contrast(1.2);transition:filter .3s}
+  .sheet figure:hover img{filter:grayscale(0) contrast(1.05)}
+  .sheet figcaption{position:absolute;left:0;bottom:0;font-family:var(--type);font-size:10px;background:#050505;color:var(--bone-dim);padding:2px 6px}
+  .sprocket{height:10px;background:repeating-linear-gradient(90deg, transparent 0 14px, var(--ink-2) 14px 22px);opacity:.9}
+  .sprocket-wrap{background:#050505;padding:4px 0}
+  @media (max-width:640px){.sheet{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---------- fan capture ---------- */
+  .capture{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,72px);align-items:center}
+  .cover{position:relative;transform:rotate(-1.5deg);box-shadow:0 30px 60px -20px rgba(0,0,0,.95);max-width:460px}
+  .cover img{aspect-ratio:1/1;object-fit:cover}
+  .cover .tag{position:absolute;bottom:-14px;left:22px}
+  .capture h3{font-family:var(--display);font-weight:400;font-size:clamp(40px,6vw,84px);line-height:.9;margin:0 0 14px}
+  .capture p{color:var(--bone-dim);margin:0 0 26px;max-width:46ch}
+  .capture p b{color:var(--bone);font-weight:500}
+  form.list{position:relative}
+  .field{display:flex;border:1px solid var(--bone);background:transparent}
+  .field input{
+    flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--bone);
+    font-family:var(--mono);font-size:16px;padding:18px 16px;
+  }
+  .field input::placeholder{color:var(--grey)}
+  .field button{
+    border:0;border-left:1px solid var(--bone);background:var(--bone);color:var(--ink);cursor:pointer;
+    font-family:var(--display);font-size:24px;letter-spacing:.06em;padding:0 26px;transition:background .2s,color .2s;
+  }
+  .field button:hover{background:var(--hot);color:var(--bone)}
+  .field button:disabled{opacity:.5;cursor:wait}
+  .hint{font-family:var(--type);font-size:12px;color:var(--grey);margin:12px 0 0}
+  .msg{margin-top:14px;font-family:var(--type);font-size:14px;min-height:1.4em}
+  .msg.ok{color:var(--bone)}
+  .msg.err{color:var(--hot)}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+  .stamp{
+    display:none;position:absolute;right:-8px;top:-70px;transform:rotate(-12deg);
+    font-family:var(--display);font-size:38px;letter-spacing:.1em;color:var(--hot);
+    border:4px double var(--hot);padding:4px 16px;opacity:.85;pointer-events:none;
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.6' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 -1.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.6' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 -1.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  form.list.done .stamp{display:block;animation:slam .35s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes slam{from{transform:rotate(-12deg) scale(2.2);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:.85}}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:40px 0 60px;color:var(--bone-dim);font-size:12px}
+  footer .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 30px;align-items:center}
+  footer a{text-decoration:none;letter-spacing:.14em;text-transform:uppercase;margin-right:22px}
+  footer a:hover{color:var(--bone)}
+  footer .sig{font-family:var(--type);color:var(--grey)}
+
+  @media (max-width:820px){
+    .listen,.capture{grid-template-columns:1fr}
+    .polaroid{max-width:340px}
+    .cover{max-width:340px;margin:0 auto 24px}
+    .capture>div:first-child{order:2}
+  }
+  @media (max-width:480px){
+    .platforms{grid-template-columns:1fr}
+    .field button{padding:0 18px;font-size:20px}
+    .title{font-size:clamp(64px,22vw,120px)}
+  }
+</style>
+</head>
+<body>
+<div class="sweep" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<header class="bar">
+  <a href="#top" class="rec"><i></i> The Poster Child</a>
+  <nav>
+    <a href="#watch">Watch</a>
+    <a href="#listen">Listen</a>
+    <a href="#list">Get on the list</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="photo">
+      <picture>
+        <source srcset="img/mic.webp" type="image/webp">
+        <img src="img/mic.jpg" alt="The Poster Child on the studio floor, gripping a microphone" fetchpriority="high">
+      </picture>
+    </div>
+    <div class="wrap">
+      <p class="kicker">studio b &nbsp;·&nbsp; brooklyn, ny &nbsp;·&nbsp; door's open</p>
+      <h1 class="title"><span class="distress">The Poster<br>Child</span></h1>
+      <div class="hero-foot">
+        <p><b>You found it.</b> This is the corner of the internet where the seamless is a little scuffed and the lights stay on late. Alt-pop for the ones who aren't sure which side of the poster they're on.</p>
+        <a class="scroll" href="#watch"><span></span> scroll</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- WATCH -->
+  <section id="watch">
+    <div class="marks" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Watch</h2>
+        <div class="num">01 / official video</div>
+      </div>
+      <div class="video-grid">
+        <div class="lightbox">
+          <div class="frame">
+            <iframe src="https://www.youtube.com/embed/rZ-d29WgKCc?si=_cmnaZq32baLMpOj" title="The Poster Child — Guilty Pleasure (Official Video)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="slate">
+            <span><b>Guilty Pleasure</b> — official video</span>
+            <span>dir. Mattie Gillette</span>
+            <span>take 1 &nbsp;·&nbsp; no reshoots</span>
+          </div>
+        </div>
+        <p class="video-note"><em>Shot in one room, on a white cyc, with real scissors and real bleach.</em> Everything you see happened once.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTEN -->
+  <section id="listen">
+    <div class="marks" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Listen</h2>
+        <div class="num">02 / everywhere</div>
+      </div>
+      <div class="listen">
+        <div>
+          <p class="listen-copy">The <b>FREAK</b> capsule is out now. Pick your platform, press follow, and you'll get the next one the second it drops.</p>
+          <div class="platforms">
+            <a class="plat" href="https://open.spotify.com/artist/0tyD0QMbz9QifLT6SBKwIe" target="_blank" rel="noopener"><span>Spotify<small>follow</small></span>
+              <svg viewBox="0 0 24 24"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm5.5 17.3a.75.75 0 0 1-1.03.25c-2.82-1.72-6.37-2.11-10.55-1.16a.75.75 0 1 1-.33-1.46c4.57-1.04 8.5-.6 11.66 1.34.35.22.46.68.25 1.03zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.94.94 0 1 1-.54-1.8c4.36-1.32 9.78-.68 13.49 1.6.44.27.58.85.31 1.29zm.13-3.4C15.23 8.33 8.84 8.12 5.14 9.24a1.13 1.13 0 1 1-.65-2.16c4.25-1.29 11.3-1.04 15.76 1.61a1.13 1.13 0 0 1-1.15 1.94z"/></svg></a>
+            <a class="plat" href="https://music.apple.com/us/artist/the-poster-child/1676171238" target="_blank" rel="noopener"><span>Apple Music<small>follow</small></span>
+              <svg viewBox="0 0 24 24"><path d="M17 1.5v13.2a3.4 3.4 0 1 1-2-3.1V6.2L9 7.6v9.6a3.4 3.4 0 1 1-2-3.1V4.6z"/></svg></a>
+            <a class="plat" href="https://www.youtube.com/@iamtheposterchild" target="_blank" rel="noopener"><span>YouTube<small>subscribe</small></span>
+              <svg viewBox="0 0 24 24"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 4 12 4 12 4s-7.5 0-9.4.4A3 3 0 0 0 .5 6.5 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.5 3 3 0 0 0 2.1 2.1C4.5 20 12 20 12 20s7.5 0 9.4-.4a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.5zM9.6 15.6V8.4l6.2 3.6z"/></svg></a>
+            <a class="plat" href="https://soundcloud.com/iamtheposterchild" target="_blank" rel="noopener"><span>SoundCloud<small>follow</small></span>
+              <svg viewBox="0 0 24 24"><path d="M1 13.5h1v4H1zm2-2h1v6H3zm2-1h1v7H5zm2-2h1v9H7zm2-1h1v10H9zm2 .5c.5-.4 1.6-.9 2.7-.9a4.3 4.3 0 0 1 4.3 4c.3-.1.7-.2 1-.2a2.8 2.8 0 0 1 0 5.6H11z"/></svg></a>
+            <a class="plat" href="https://tidal.com/artist/3909587/u" target="_blank" rel="noopener"><span>Tidal<small>follow</small></span>
+              <svg viewBox="0 0 24 24"><path d="M4 6l4 4-4 4-4-4zm8 0l4 4-4 4-4-4zm8 0l4 4-4 4-4-4zm-8 8l4 4-4 4-4-4z"/></svg></a>
+            <a class="plat" href="https://link.deezer.com/s/34lShjthVaszPsoUGqDWs" target="_blank" rel="noopener"><span>Deezer<small>follow</small></span>
+              <svg viewBox="0 0 24 24"><path d="M18 4h6v3h-6zM12 8h6v3h-6zm6 0h6v3h-6zM0 12h6v3H0zm6 0h6v3H6zm6 0h6v3h-6zm6 0h6v3h-6zM0 16h6v3H0zm6 0h6v3H6zm6 0h6v3h-6zm6 0h6v3h-6z"/></svg></a>
+          </div>
+        </div>
+        <figure class="polaroid">
+          <span class="tag alt">roll 02 · frame 09</span>
+          <picture>
+            <source srcset="img/torso.webp" type="image/webp">
+            <img src="img/torso.jpg" alt="The Poster Child pulling a shirt over his face under studio light" loading="lazy">
+          </picture>
+          <figcaption><span>arms over face</span><span>fuji 400</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SHEET -->
+  <div class="wrap">
+    <div class="sprocket-wrap"><div class="sprocket"></div></div>
+    <div class="sheet">
+      <figure><picture><source srcset="img/mic.webp" type="image/webp"><img src="img/mic.jpg" alt="" loading="lazy" style="object-position:50% 40%"></picture><figcaption>01</figcaption></figure>
+      <figure><picture><source srcset="img/torso.webp" type="image/webp"><img src="img/torso.jpg" alt="" loading="lazy" style="object-position:50% 20%"></picture><figcaption>02</figcaption></figure>
+      <figure><picture><source srcset="img/pana.webp" type="image/webp"><img src="img/pana.jpg" alt="" loading="lazy"></picture><figcaption>03</figcaption></figure>
+      <figure><picture><source srcset="img/cover.webp" type="image/webp"><img src="img/cover.jpg" alt="" loading="lazy"></picture><figcaption>04</figcaption></figure>
+    </div>
+    <div class="sprocket-wrap"><div class="sprocket"></div></div>
+  </div>
+
+  <!-- LIST -->
+  <section id="list">
+    <div class="marks" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>The List</h2>
+        <div class="num">03 / inner circle</div>
+      </div>
+      <div class="capture">
+        <div>
+          <div class="cover">
+            <picture>
+              <source srcset="img/cover.webp" type="image/webp">
+              <img src="img/cover.jpg" alt="Rinse & Repeat cover art" loading="lazy">
+            </picture>
+            <span class="tag">rinse &amp; repeat · out now</span>
+          </div>
+        </div>
+        <div>
+          <h3>Get on the list.</h3>
+          <p>Unreleased demos, show invites before they're public, and the occasional 2am note. <b>Drop your email or your Instagram</b>, whichever you actually check.</p>
+          <form class="list" id="fanForm" novalidate>
+            <span class="stamp">on the list</span>
+            <div class="field">
+              <input type="text" name="contact" id="contact" placeholder="you@email.com  or  @yourhandle" autocomplete="email" required aria-label="Email or Instagram handle">
+              <button type="submit" id="submitBtn">Sign me up</button>
+            </div>
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <p class="hint">no spam. no algorithm. just me.</p>
+            <p class="msg" id="msg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap row">
+      <div>
+        <a href="https://www.instagram.com/iamtheposterchild" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.youtube.com/@iamtheposterchild" target="_blank" rel="noopener">YouTube</a>
+        <a href="mailto:theposterchildmusic@gmail.com">Contact</a>
+      </div>
+      <div class="sig">© <span id="yr"></span> the poster child &nbsp;·&nbsp; shot on a seamless in brooklyn</div>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // ===== FAN CAPTURE =====
+  // Paste your Google Apps Script "Web app" URL here after deploying it.
+  const SHEET_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const form = document.getElementById('fanForm');
+  const input = document.getElementById('contact');
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('msg');
+
+  function classify(v){
+    v = v.trim();
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return {type:'email', value:v.toLowerCase()};
+    const h = v.replace(/^@/,'').replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i,'').replace(/[\/?].*$/,'');
+    if (/^[A-Za-z0-9._]{1,30}$/.test(h)) return {type:'instagram', value:'@'+h.toLowerCase()};
+    return null;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.className = 'msg';
+    if (form.website.value) return; // honeypot
+    const c = classify(input.value);
+    if (!c){ msg.textContent = 'that doesn\'t look like an email or a handle. try again?'; msg.classList.add('err'); input.focus(); return; }
+    if (SHEET_ENDPOINT.startsWith('PASTE_')){ msg.textContent = 'form isn\'t wired up yet (missing Apps Script URL).'; msg.classList.add('err'); return; }
+
+    btn.disabled = true; btn.textContent = 'Sending';
+    try{
+      await fetch(SHEET_ENDPOINT, {
+        method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify({ type:c.type, value:c.value, source:location.hostname, ua:navigator.userAgent, ref:document.referrer })
+      });
+      form.classList.add('done');
+      msg.textContent = c.type === 'email' ? 'you\'re in. check your inbox sometime.' : 'you\'re in. watch your DMs.';
+      msg.classList.add('ok');
+      input.value = '';
+      btn.textContent = 'Done';
+    }catch(err){
+      msg.textContent = 'something broke on my end. try again in a sec.'; msg.classList.add('err');
+      btn.disabled = false; btn.textContent = 'Sign me up';
+    }
+  });
+</script>
+</body>
+</html>
